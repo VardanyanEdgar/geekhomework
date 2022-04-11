@@ -21,10 +21,16 @@
 int main()
 {
 	//№1
-	const int a = 9;
-	const int b = 124;
-	const int c = 15;
-	const int d = 2;
+	//const int a = 9;
+	//const int b = 124;
+	//const int c = 15;
+	//const int d = 2;
+	
+	extern const int a;
+	extern const int b;
+	extern const int c;
+	extern const int d;	
+		
 	float calc = a * (b + (static_cast <float>(c) / d)); // Вопрос: только получается на делении надо приводить тип, на умножение нормально работает? не до конца здесь понял.
 	std::cout << "#1 calc is " << calc << std::endl;
 
