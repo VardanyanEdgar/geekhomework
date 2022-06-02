@@ -1,63 +1,36 @@
-﻿/* private-массив целых чисел длиной 10;
+﻿#include <iostream>
 
-• private целочисленное значение для отслеживания длины стека;
-• public-метод с именем reset(), который будет сбрасывать длину и все значения элементов на 0;
-• public-метод с именем push(), который будет добавлять значение в стек.
-push() должен возвращать значение false, если массив уже заполнен, и true в противном случае;
-• public-метод с именем pop() для вытягивания и возврата значения из стека.
-Если в стеке нет значений, то должно выводиться предупреждение;
-• public-метод с именем print(), который будет выводить все значения стека.*/
-
-
-#include <iostream>
-#include <cstdint>
-
-class Stack
+void remove_by_index(int* a, int size, int index_to_remove)
 {
-private:
-    static const int Size = 10;
-    int arr[Size] = { 1, 5, 3, 6, 7, 8,  9, 12, 16, 45 };
+    for (int i = index_to_remove; i < size - 1; ++i)
+        a[i] = a[i + 1];
+    a[size - 1] = 0;
+}
 
+void print_array(int* a, int size)
+{
+    std::cout << "Array:" << std::endl;
+    for (int i = 0; i < size; ++i)
+        std::cout << a[i] << " ";
+}
 
-public:
+int main()
+{
+    int size, * a;
+    std::cin >> size;
+    a = new int[size];
+    for (int i = 0; i < size; ++i)
+        std::cin >> a[i];
+    print_array(a, size);
 
-    void reset()
-    {
-        for (int i = 0; i < Size-1; i++)
-        {
-            arr[i] = 0;
-            std::cout << "arr I first is" << arr[i] << std::endl;
-            arr[i] = arr[i + 1];
-            std::cout << "arr I+1 now " << arr[i+1] << std::endl;
-        };
-    };
+    int index_to_remove;
+    std::cout << "Index of element to remove: ";
+    std::cin >> index_to_remove;
+    remove_by_index(a, size, index_to_remove);
+    print_array(a, size);
 
-    void print() {
-        for (int i = 0; i < Size; i++)
-        {
-            std::cout << "arr new now is " << arr[i] << std::endl;
-            std::cout << "sise " << Size << std::endl;
-        }
-    };
-};
-
-        int main()
-        {
-            Stack stack;
-            stack.reset();
-            stack.print();
-
-            //stack.push(3);
-           // stack.push(7);
-           // stack.push(5);
-           // stack.print();
-
-           // stack.pop();
-           // stack.print();
-
-            //stack.pop();
-           // stack.pop();
-            //stack.print();
-
-            return 0;
-        }
+    delete[] a;
+    std::cin.ignore();
+    std::cin.get();
+    return 0;
+}
