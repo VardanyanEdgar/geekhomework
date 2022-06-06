@@ -1,0 +1,97 @@
+﻿/*1. Создать класс Person(человек) с полями : имя, возраст, пол и вес.
+Определить методы переназначения имени, изменения возраста и веса.Создать производный 
+класс Student
+(студент), имеющий поле года обучения.Определить методы переназначения 
+и увеличения этого значения.Создать счетчик количества созданных студентов.
+В функции main() создать несколько(не больше трёх) студентов.
+Вывести информацию о них.
+*/
+
+
+#include <iostream>
+#include <string.h>
+
+
+class Person 
+{
+private:
+	std::string m_name;
+	int m_age;
+	char m_sex;
+	int m_weight;
+	
+public:
+	void setname(std::string name) {
+		this-> m_name = name;
+	};
+	void setage(int age) {
+		this-> m_age = age;
+	}
+
+	void setsex(int sex) {
+		this-> m_sex = sex;
+	}
+
+	void setweight(int weight) {
+		this-> m_weight = weight;
+	}
+	void print()
+	{
+		std::cout << m_name << '\n' << m_age << '\n' << m_sex << '\n' << m_weight << std::endl;
+	}
+};
+
+class Student : public Person
+{
+private:
+	int s_year;
+public:
+	void setyear(int year)
+	{
+		this-> s_year = year;
+	}
+	void setnewyear(int year, int value)
+	{
+		s_year = year + value;
+	}
+};
+
+int main()
+{
+	Student Count;
+	int number;
+	std::cout << "please insert number of students for listing" << std::endl;
+	std::cin >> number;
+	int n = number;
+	for (int i = 0; i < n; i++)
+	{
+		std::string name;
+		std::cout << "insert name ";
+		std::cin >> name;
+		Count.setname(name);
+		int age;
+		std::cout << "insert age ";
+		std::cin >> age;
+		Count.setage(age); 
+		char sex;
+		std::cout << "insert sex ";
+		std::cin >> sex;
+		Count.setsex(sex);
+		int weight;
+		std::cout << "insert weight ";
+		std::cin >> weight;
+		Count.setweight(weight);
+		int year;
+		std::cout << "insert year ";
+		std::cin >> year;
+		Count.setyear(year);
+
+		Count.setnewyear(year, 1); // просто для работы кункционала
+	}
+
+	Count.print();
+	std::cout << "numberofstudents is " << number << std::endl;
+
+	
+	return 0;
+}
