@@ -1,0 +1,94 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+#include <tuple>
+#include <string>
+#include <optional>
+#include <functional>
+using namespace std;
+
+
+
+/* 
+1. Создайте структуру Person с 3 полями: фамилия, имя, отчество.
+Поле отчество должно быть опционального типа, т.к. не у всех 
+людей есть отчество. 
+Перегрузите оператор вывода данных для этой структуры. 
+Также перегрузите операторы < и == (используйте tie).
+
+*/
+
+
+
+struct Person {
+
+	string Name, Surname;
+	optional <string> Middle_name = nullopt;
+
+	inline std::ostream& operator <<(ostream& strm, const Person& ob)
+	{
+		strm << "person " << ob.Name << "," << ob.Surname << "," << ob.Middle_name.value_or.value_or("") << endl;
+		return strm;
+	}
+
+	bool operator < (const Person& right) const
+	{
+		return tie(Surname, Name, Middle_name) < tie(right.Surname, right.Name, right.Middle_name);
+	}
+
+	bool operator == (const Person& right) const
+	{
+		return tie(Surname, Name, Middle_name) == tie(right.Surname, right.Name, right.Middle_name);
+	}
+};
+
+
+
+	struct PhoneNumber {
+		unsigned int Countycode, Citycode;
+		string Number;
+		optional<unsigned int> addioncode = nullopt;
+
+};
+
+
+int main() {
+	std::ifstream file("E:\\Geekbrains\\homeworks\\PhoneBook.txt");  // путь к файлу PhoneBook.txt
+	if (!file.is_open()) 
+	{
+		cout << "can't open the file" << endl;
+	}
+
+
+		/*PhoneBook book(file);
+	cout << book;
+	cout << "------SortByPhone-------" << endl;
+	book.SortByPhone();
+	cout << book;
+	cout << "------SortByName--------" << endl;
+	book.SortByName();
+	cout << book;
+	cout << "-----GetPhoneNumber-----" << endl;
+	// лямбда функция, которая принимает фамилию и выводит номер телефона
+	этого человека, либо строку с ошибкой
+		auto print_phone_number = [&book](const string& surname) {
+		cout << surname << "\t";
+		auto answer = book.GetPhoneNumber(surname);
+		if (get<0>(answer).empty())
+			cout << get<1>(answer);
+		else
+			cout << get<0>(answer);
+		cout << endl;
+	};
+	
+		// вызовы лямбды
+		print_phone_number("Ivanov");
+	print_phone_number("Petrov");
+	cout << "----ChangePhoneNumber----" << endl;
+	book.ChangePhoneNumber(Person{ "Kotov", "Vasilii", "Eliseevich" },
+		PhoneNumber{ 7, 123, "15344458", nullopt });
+	book.ChangePhoneNumber(Person{ "Mironova", "Margarita", "Vladimirovna" },
+		PhoneNumber{ 16, 465, "9155448", 13 });
+	cout << book;*/
+}
