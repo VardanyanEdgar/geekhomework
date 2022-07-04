@@ -6,9 +6,8 @@
 #include <string>
 #include <optional>
 #include <functional>
+#include <sstream>
 using namespace std;
-
-
 
 /* 
 1. Создайте структуру Person с 3 полями: фамилия, имя, отчество.
@@ -16,19 +15,26 @@ using namespace std;
 людей есть отчество. 
 Перегрузите оператор вывода данных для этой структуры. 
 Также перегрузите операторы < и == (используйте tie).
+2. Создайте структуру PhoneNumber с 4 полями:
+· код страны (целое число)
+· код города (целое число)
+· номер (строка)
+· добавочный номер (целое число, опциональный тип)
+Для этой структуры перегрузите оператор вывода. Необходимо, чтобы номер телефона
+выводился в формате: +7(911)1234567 12, где 7 – это номер страны, 911 – номер города,
+1234567 – номер, 12 – добавочный номер. Если добавочного номера нет, то его выводить не
+надо. Также перегрузите операторы < и == (используйте tie)
 
 */
-
-
 
 struct Person {
 
 	string Name, Surname;
 	optional <string> Middle_name = nullopt;
 
-	inline std::ostream& operator <<(ostream& strm, const Person& ob)
+	friend inline std::ostream& operator <<(ostream& strm, const Person& ob) //просто inline ругался/
 	{
-		strm << "person " << ob.Name << "," << ob.Surname << "," << ob.Middle_name.value_or.value_or("") << endl;
+		strm << "person " << ob.Name << "," << ob.Surname << "," << ob.Middle_name.value_or("") << endl;
 		return strm;
 	}
 
@@ -43,26 +49,166 @@ struct Person {
 	}
 };
 
-
-
 	struct PhoneNumber {
-		unsigned int Countycode, Citycode;
+		unsigned int Countrycode, Citycode;
 		string Number;
-		optional<unsigned int> addioncode = nullopt;
+		optional<unsigned int> addtcode = nullopt;
+
+		friend inline std::ostream& operator <<(ostream& strm, const PhoneNumber& ph)
+		{
+			strm << "phone num is +" << ph.Countrycode << "(" << ph.Citycode << ")" << ph.Number << " " << ph.addtcode.value_or("") << endl;
+			return strm;
+		}
+
+		bool operator < (const PhoneNumber& right) const
+		{
+			return tie(Countrycode, Citycode, Number, addtcode) < tie(right.Countrycode, right.Citycode, right.Number, right.addtcode);
+		}
+
+		bool operator == (const PhoneNumber& right) const
+		{
+			return tie(Countrycode, Citycode, Number, addtcode) == tie(right.Countrycode, right.Citycode, right.Number, right.addtcode);
+		}
 
 };
 
+	class PhoneBook
+	{
+	 public:
+		vector <pair<Person, PhoneNumber>> mData;
+		PhoneBook(ifstream& file)
+		{
 
-int main() {
+			enum INDEX {
+				LNAME,
+				FNAME,
+				MNAME,
+				COUNTRY_CODE,
+				CITY_CODE,
+				NUMBER,
+				ADDITIONAL_NUMBER
+			};
+
+			string line;
+			stringstream stream;
+
+			while (getline(file, line)) {
+
+
+				/*
+				string record;
+				stringstream buf;
+				vector <string> fieldsVec;
+				string fieldstr;
+				while (file)
+				{
+					getline(file, record);
+					buf << record;
+					while (!buf.eof())
+					{
+						buf >> fieldstr;
+						fieldsVec.push_back(fieldstr);
+					}
+				};*/
+
+				stream << line;
+				Person person;
+				PhoneNumber number;
+				string word;
+				int index = 0;
+
+				while (getline(stream, word, ' ')) {
+					switch (index) {
+					case LNAME:
+						person.Surname = word;
+						break;
+					case FNAME:
+						person.Name = word;
+						break;
+					case MNAME:
+						word.empty() ? person.Middle_name = nullopt : person.Middle_name = word;
+						break;
+					case COUNTRY_CODE:
+						number.Countrycode = stoi(word);
+						break;
+					case CITY_CODE:
+						number.Citycode = stoi(word);
+						break;
+					case NUMBER:
+						number.Number = word;
+						break;
+					case ADDITIONAL_NUMBER:
+						word.empty() ? number.addtcode = nullopt : number.addtcode = stoi(word);
+						break;
+					}
+					index++;
+				}
+
+				mData.emplace_back(person, number);
+				stream.clear();
+			};
+
+			file.close();
+	}
+
+		friend inline std::ostream& operator << (ostream& strm, const PhoneBook& st)
+		{
+			for (const auto& student : st.mData) {
+				strm << student.first << "\t" << student.second << endl;
+			}
+			return strm;
+		};
+
+		void SortByName()
+		{
+			sort(mData.begin(), mData.end());
+		};
+
+		void SortByPhone()
+		{
+			sort(mData.begin(), mData.end()), [](const pair<Person, PhoneNumber>& l, const pair<Person, PhoneNumber>& r)
+			{
+				return l.second < r.second;
+			};
+		};
+
+		pair <string, PhoneNumber> GetPhoneNumber(const string& surname) const
+		{
+			PhoneNumber foundNumber;
+			for (const auto& rec : mData)
+				if (rec.first.Surname == surname)
+				{
+					if (!foundNumber.Number.empty())
+					{
+						return make_pair("found more than 1", foundNumber);
+					}
+					foundNumber = rec.second;
+				}
+			return make_pair(foundNumber.Number.empty() ? "not found" : "", foundNumber);
+		}
+
+		bool ChangePhoneNumber(const Person& prsn, const PhoneNumber& phone)
+		{
+			for (auto&rec : mData)
+				if (rec.first == prsn)
+				{
+					rec.second = phone;
+					return true;
+				}
+			return false;
+		}
+    };
+
+int main() 
+{
 	std::ifstream file("E:\\Geekbrains\\homeworks\\PhoneBook.txt");  // путь к файлу PhoneBook.txt
-	if (!file.is_open()) 
+	if (!file.is_open())
 	{
 		cout << "can't open the file" << endl;
 	}
 
-
-		/*PhoneBook book(file);
-	cout << book;
+	PhoneBook book(file);
+    cout << book;
 	cout << "------SortByPhone-------" << endl;
 	book.SortByPhone();
 	cout << book;
@@ -70,8 +216,7 @@ int main() {
 	book.SortByName();
 	cout << book;
 	cout << "-----GetPhoneNumber-----" << endl;
-	// лямбда функция, которая принимает фамилию и выводит номер телефона
-	этого человека, либо строку с ошибкой
+	// лямбда функция, которая принимает фамилию и выводит номер телефона этого человека, либо строку с ошибкой
 		auto print_phone_number = [&book](const string& surname) {
 		cout << surname << "\t";
 		auto answer = book.GetPhoneNumber(surname);
@@ -83,12 +228,12 @@ int main() {
 	};
 	
 		// вызовы лямбды
-		print_phone_number("Ivanov");
+	print_phone_number("Ivanov");
 	print_phone_number("Petrov");
 	cout << "----ChangePhoneNumber----" << endl;
 	book.ChangePhoneNumber(Person{ "Kotov", "Vasilii", "Eliseevich" },
 		PhoneNumber{ 7, 123, "15344458", nullopt });
 	book.ChangePhoneNumber(Person{ "Mironova", "Margarita", "Vladimirovna" },
 		PhoneNumber{ 16, 465, "9155448", 13 });
-	cout << book;*/
+	cout << book;
 }
