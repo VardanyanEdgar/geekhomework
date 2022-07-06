@@ -1,0 +1,78 @@
+/* 1. Реализуйте шаблонную функцию Swap, которая принимает два указателя и обменивает
+местами значения, на которые указывают эти указатели (нужно обменивать именно сами
+указатели, переменные должны оставаться в тех же адресах памяти).
+2. Реализуйте шаблонную функцию SortPointers, которая принимает вектор указателей и
+сортирует указатели по значениям, на которые они указывают.
+3. Подсчитайте количество гласных букв в книге “Война и мир”. Для подсчета используйте 4
+способа:
+○ count_if и find
+○ count_if и цикл for
+○ цикл for и find
+○ 2 цикла for
+Замерьте время каждого способа подсчета и сделайте выводы.
+Справка:
+count_if - это алгоритмическая функция из STL, которая принимает 3 параметра: итератор на
+начало, итератор на конец и унарный предикат (функцию, принимающую один параметр и
+возвращающую тип bool).
+find - это метод класса string, который возвращает позицию символа (строки), переданного в
+качестве пар
+*/
+
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+template <typename T1, typename T2>
+
+void Swap(T1* a, T2* b) 
+//void Swap(int* a, int* b)
+{ 
+    cout << "current pointers are " << a << "\t" << b << endl;
+    T1* temp = a;
+    T2* i = b;
+    T1* j = a;
+    cout << "new pointers are " << a << "\t" << b << endl << endl;
+}   
+
+//template <typename T3, typename T4>
+
+int main()
+{
+    cout << "Task #1 \n";
+    int a = 4;
+    double b = 10.7;
+    string c = "wazza";
+    long int d = 21345451;
+    bool e = true;
+    
+    int* pa = &a;
+    double* pb = &b;
+    string* pc = &c;
+    long int* pd = &d;
+    bool* pe = &e;
+    
+    /*
+    // хотел сделать передачу любого параметра в функцию, но перед main как понял нельзя употреблять template ?
+    T3 x;
+    T4 y;   
+        cout << "choose 2 types from a,b,c,d,e \n"; 
+    cout << "First is \n";
+    cin >> x;
+    cout << "Second is \n";
+    cin >> y;
+    cout << endl; 
+    */
+    cout << "ltes swap pointers" << endl;
+
+    Swap(&a, &b);
+   
+    Swap(&a, &c);
+    
+    Swap(&d, &e);
+    Swap(&b, &e);
+    
+    cout << a << " " << b << " " << c << " " << d << " " << e << endl;
+
+}
