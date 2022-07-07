@@ -21,58 +21,74 @@ find - это метод класса string, который возвращае�
 #include <iostream>
 #include <vector>
 #include <string>
+#include <ctime>
 
 using namespace std;
 
 template <typename T1, typename T2>
-
-void Swap(T1* a, T2* b) 
+void Swap(T1* &a, T2* &b) 
 //void Swap(int* a, int* b)
 { 
-    cout << "current pointers are " << a << "\t" << b << endl;
     T1* temp = a;
-    T2* i = b;
-    T1* j = a;
-    cout << "new pointers are " << a << "\t" << b << endl << endl;
+    a = b;
+    b = temp;
+    cout << "new pointers are \n" << a << "\t" << b << endl << endl;
 }   
 
-//template <typename T3, typename T4>
+void Fulfillvector(const int size) 
+{
+    vector <int> v;
+    for (int i = 0; i < size; i++)
+    {
+        int a = rand() % 10;
+        v.push_back(a);
+    }
+    
+    for (auto elem : v)
+    {
+        cout << elem << " ";
+    }
+}
+
+void SortPointers() 
+{
+
+}
 
 int main()
 {
     cout << "Task #1 \n";
     int a = 4;
+    int a1 = 81;
     double b = 10.7;
-    string c = "wazza";
-    long int d = 21345451;
-    bool e = true;
-    
-    int* pa = &a;
-    double* pb = &b;
-    string* pc = &c;
-    long int* pd = &d;
-    bool* pe = &e;
-    
-    /*
-    // хотел сделать передачу любого параметра в функцию, но перед main как понял нельзя употреблять template ?
-    T3 x;
-    T4 y;   
-        cout << "choose 2 types from a,b,c,d,e \n"; 
-    cout << "First is \n";
-    cin >> x;
-    cout << "Second is \n";
-    cin >> y;
-    cout << endl; 
-    */
-    cout << "ltes swap pointers" << endl;
-
-    Swap(&a, &b);
+    double b1 = 18.1;
    
-    Swap(&a, &c);
+    int* pa = &a;
+    int* pa1 = &a1;
+    double* pb = &b;
+    double* pb1 = &b1;
     
-    Swap(&d, &e);
-    Swap(&b, &e);
+    //хотел сделать передачу любого параметра в функцию, но перед main как понял нельзя употреблять template?
+   
+    cout << "current pointers are \n" << "pa is " << pa << " pa1 is " << pa1 << " \npb is " << pb << " pb1 is " << pb1 << endl;
+    cout << "Fist swap" << endl;
+
+    Swap(pa, pa1);
+   
+    cout << "Second swap" << endl;
+    Swap(pb, pb1);
     
-    cout << a << " " << b << " " << c << " " << d << " " << e << endl;
+    //Swap(pa, pb1); // получается нельзя через шаблоны приводить разные типы?
+    //cout << a << " " << a1 << " " << b << " " << b1 << endl;
+    //cout << "pa is " << pa << " pa1 is " << pa1 << "\npb is " << pb << " pb1 is " << pb1 << endl; //двойная проверка
+
+    cout << "Task #2 \n";
+
+    int sizeofvect;
+    cout << "please insert size of vector - ";
+    cin >> sizeofvect;
+
+    Fulfillvector(sizeofvect);
+    
 
 }
