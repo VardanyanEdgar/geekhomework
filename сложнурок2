@@ -92,3 +92,116 @@ int main()
     
 
 }
+
+
+
+______________________________________________________________________________________________________________________________________________________
+2. Реализуйте шаблонную функцию SortPointers, которая принимает вектор указателей и
+сортирует указатели по значениям, на которые они указывают.
+
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <ctime>
+
+using namespace std;
+
+template <typename T1, typename T2>
+void Swap(T1* &a, T2* &b) 
+//void Swap(int* a, int* b)
+{ 
+    T1* temp = a;
+    a = b;
+    b = temp;
+    cout << "new pointers are \n" << a << "\t" << b << endl << endl;
+}   
+
+
+/*
+vector<int*> VectorPointers (int arr)
+{
+    vector <int*> vec;
+    int newarr= arr;
+    for (auto it = begin(newarr); it != end(m); it++)
+    {
+        int* pi = newarr[i];
+        vec.push_back(pi);
+    }
+    return vec;
+}
+*/
+
+/*void SortPointers() 
+{
+
+}*/
+
+int main()
+{
+    cout << "Task #1 \n";
+    int a = 4;
+    int a1 = 81;
+    double b = 10.7;
+    double b1 = 18.1;
+   
+    int* pa = &a;
+    int* pa1 = &a1;
+    double* pb = &b;
+    double* pb1 = &b1;
+    
+    //хотел сделать передачу любого параметра в функцию, но перед main как понял нельзя употреблять template?
+   
+    cout << "current pointers are \n" << "pa is " << pa << " pa1 is " << pa1 << " \npb is " << pb << " pb1 is " << pb1 << endl;
+    cout << "Fist swap" << endl;
+
+    Swap(pa, pa1);
+   
+    cout << "Second swap" << endl;
+    Swap(pb, pb1);
+    
+    //Swap(pa, pb1); // получается нельзя через шаблоны приводить разные типы?
+    //cout << a << " " << a1 << " " << b << " " << b1 << endl;
+    //cout << "pa is " << pa << " pa1 is " << pa1 << "\npb is " << pb << " pb1 is " << pb1 << endl; //двойная проверка
+
+    cout << "Task #2 \n";
+    cout << "please insert size of Array - ";
+    int sizeofarr;
+    cin >> sizeofarr;
+    int Array[sizeofarr];
+    
+    for (int i = 0; i < sizeofarr; i++)
+    {
+     Array[i] = rand() % 10;
+    }
+    
+     for (int i = 0; i < sizeofarr; i++)
+    {
+      cout<< Array[i];
+    }
+    
+    vector<int*> Vect;
+    
+    for (auto elem : Vect)
+    {
+        for (int i=0; i <sizeofarr; i++)
+        {
+        int *pa;
+        pa = &Array[i];
+        Vect.push_back(pa);
+        }
+        cout << "elem is" <<elem;
+    }
+    
+   
+    
+    /*for (auto it = begin(Array); it != end(Array); it++)
+    {
+        cout << *it << " ";
+    }*/
+    
+    //VectorPointers(v);
+}
+
+
+
